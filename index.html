@@ -1,0 +1,2041 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SAIS School - Modern Islamic School</title>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Inter, Poppins, Arial, sans-serif;
+    }
+
+    :root {
+      --army: #3f4a2f;
+      --army-dark: #172312;
+      --army-soft: #eef3df;
+      --yellow: #f5c842;
+      --white: #ffffff;
+      --text: #26311f;
+      --muted: #6c7565;
+      --bg: #fbfaef;
+      --card: #ffffff;
+      --glass: rgba(255,255,255,.78);
+      --shadow: rgba(23,35,18,.12);
+    }
+
+    body.dark {
+      --army: #9aaa73;
+      --army-dark: #0b1008;
+      --army-soft: #182112;
+      --yellow: #f5c842;
+      --white: #11180d;
+      --text: #f4f7e8;
+      --muted: #c8d0bb;
+      --bg: #0e140b;
+      --card: #151f10;
+      --glass: rgba(15,22,11,.78);
+      --shadow: rgba(0,0,0,.45);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      overflow-x: hidden;
+      transition: background .3s ease, color .3s ease;
+    }
+
+    body.no-scroll { overflow: hidden; }
+
+    #loader {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      background:
+        radial-gradient(circle at top right, rgba(245, 200, 66, .35), transparent 35%),
+        linear-gradient(135deg, #172312, #3f4a2f);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      color: white;
+      transition: .8s ease;
+    }
+
+    #loader.hide {
+      opacity: 0;
+      visibility: hidden;
+    }
+
+    .loader-logo {
+      width: 96px;
+      height: 96px;
+      border-radius: 30px;
+      background: var(--yellow);
+      color: #172312;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 38px;
+      font-weight: 900;
+      margin-bottom: 24px;
+      animation: float 1.8s infinite ease-in-out;
+      box-shadow: 0 25px 60px rgba(245, 200, 66, .45);
+    }
+
+    #loader h1 {
+      font-size: clamp(28px, 5vw, 48px);
+      text-align: center;
+      margin-bottom: 12px;
+    }
+
+    #loader p { opacity: .85; }
+
+    .bar {
+      width: 280px;
+      height: 7px;
+      border-radius: 50px;
+      overflow: hidden;
+      background: rgba(255,255,255,.22);
+      margin-top: 28px;
+    }
+
+    .bar span {
+      display: block;
+      height: 100%;
+      width: 0;
+      background: var(--yellow);
+      animation: load 5s linear forwards;
+    }
+
+    @keyframes load { to { width: 100%; } }
+    @keyframes float { 50% { transform: translateY(-10px); } }
+
+    header {
+      position: fixed;
+      top: 18px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: min(1240px, 94%);
+      z-index: 1000;
+      background: var(--glass);
+      backdrop-filter: blur(18px);
+      border: 1px solid rgba(255,255,255,.15);
+      border-radius: 999px;
+      padding: 14px 18px 14px 22px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 18px 45px var(--shadow);
+    }
+
+    .logo {
+      font-size: 22px;
+      font-weight: 900;
+      color: var(--text);
+      letter-spacing: -.5px;
+      text-decoration: none;
+    }
+
+    .logo span { color: var(--yellow); }
+
+    nav {
+      display: flex;
+      align-items: center;
+      gap: 21px;
+    }
+
+    nav a {
+      text-decoration: none;
+      color: var(--text);
+      font-weight: 800;
+      font-size: 14px;
+      transition: .3s;
+    }
+
+    nav a:hover { color: #c69b13; }
+
+    .nav-btn {
+      background: var(--army);
+      color: white !important;
+      padding: 12px 20px;
+      border-radius: 999px;
+    }
+
+    body.dark .nav-btn { color: #10180d !important; }
+
+    .nav-btn:hover {
+      background: var(--yellow);
+      color: #172312 !important;
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .theme-toggle,
+    .hamburger {
+      width: 44px;
+      height: 44px;
+      border: none;
+      border-radius: 50%;
+      background: var(--army-soft);
+      color: var(--text);
+      cursor: pointer;
+      font-size: 18px;
+      font-weight: 900;
+      transition: .3s;
+    }
+
+    .theme-toggle:hover,
+    .hamburger:hover {
+      background: var(--yellow);
+      color: #172312;
+    }
+
+    .hamburger { display: none; }
+
+    .mobile-menu {
+      position: fixed;
+      inset: 0;
+      z-index: 998;
+      background: rgba(15,22,11,.72);
+      backdrop-filter: blur(12px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 28px;
+    }
+
+    .mobile-menu.active { display: flex; }
+
+    .mobile-panel {
+      width: min(420px, 100%);
+      background: var(--card);
+      border-radius: 35px;
+      padding: 32px;
+      box-shadow: 0 30px 80px rgba(0,0,0,.25);
+    }
+
+    .mobile-panel a {
+      display: block;
+      padding: 16px 0;
+      color: var(--text);
+      text-decoration: none;
+      font-size: 22px;
+      font-weight: 900;
+      border-bottom: 1px solid rgba(127,127,127,.16);
+    }
+
+    .hero {
+      min-height: 100vh;
+      padding: 150px 8% 90px;
+      display: grid;
+      grid-template-columns: 1.08fr .92fr;
+      align-items: center;
+      gap: 55px;
+      background:
+        radial-gradient(circle at 15% 20%, rgba(245,200,66,.25), transparent 28%),
+        radial-gradient(circle at 90% 10%, rgba(63,74,47,.22), transparent 30%),
+        linear-gradient(135deg, var(--bg), var(--army-soft));
+    }
+
+    .badge {
+      display: inline-flex;
+      gap: 10px;
+      align-items: center;
+      padding: 10px 18px;
+      background: var(--card);
+      border-radius: 999px;
+      font-weight: 900;
+      color: var(--army);
+      margin-bottom: 25px;
+      box-shadow: 0 12px 35px var(--shadow);
+    }
+
+    .badge span {
+      width: 10px;
+      height: 10px;
+      background: var(--yellow);
+      border-radius: 50%;
+    }
+
+    .hero h1 {
+      font-size: clamp(42px, 6.3vw, 82px);
+      line-height: .98;
+      letter-spacing: -3px;
+      color: var(--text);
+      margin-bottom: 28px;
+    }
+
+    .hero h1 mark {
+      background: transparent;
+      color: #d2a714;
+    }
+
+    .hero p {
+      max-width: 620px;
+      color: var(--muted);
+      font-size: 18px;
+      line-height: 1.85;
+      margin-bottom: 34px;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 16px 28px;
+      border-radius: 999px;
+      text-decoration: none;
+      font-weight: 900;
+      transition: .3s;
+      border: none;
+      cursor: pointer;
+    }
+
+    .primary {
+      background: var(--army);
+      color: white;
+      box-shadow: 0 18px 35px rgba(63,74,47,.25);
+    }
+
+    body.dark .primary { color: #10180d; }
+
+    .primary:hover {
+      transform: translateY(-4px);
+      background: var(--yellow);
+      color: #172312;
+    }
+
+    .secondary {
+      background: var(--card);
+      color: var(--text);
+    }
+
+    .secondary:hover { transform: translateY(-4px); }
+
+    .hero-visual { position: relative; }
+
+    .image-card {
+      height: 520px;
+      border-radius: 42px;
+      overflow: hidden;
+      background:
+        linear-gradient(to bottom, rgba(23,35,18,.05), rgba(23,35,18,.65)),
+        url("https://www.saisschool.sch.id/media_library/image_sliders/03ec1-bg-slider-2.jpg");
+      background-size: cover;
+      background-position: center;
+      box-shadow: 0 35px 80px var(--shadow);
+    }
+
+    .floating-card {
+      position: absolute;
+      left: -28px;
+      bottom: 35px;
+      background: var(--glass);
+      backdrop-filter: blur(12px);
+      padding: 24px;
+      border-radius: 28px;
+      box-shadow: 0 20px 50px var(--shadow);
+      max-width: 280px;
+      border: 1px solid rgba(255,255,255,.15);
+    }
+
+    .floating-card h3 {
+      color: var(--text);
+      margin-bottom: 6px;
+      font-size: 26px;
+    }
+
+    .floating-card p {
+      margin: 0;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    section { padding: 95px 8%; }
+
+    .section-head {
+      max-width: 780px;
+      margin: 0 auto 55px;
+      text-align: center;
+    }
+
+    .section-head small {
+      color: #c69b13;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 1.8px;
+    }
+
+    .section-head h2 {
+      font-size: clamp(34px, 4vw, 54px);
+      color: var(--text);
+      margin: 12px 0;
+      letter-spacing: -1.7px;
+    }
+
+    .section-head p {
+      color: var(--muted);
+      line-height: 1.8;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 26px;
+    }
+
+    .grid-4 {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 22px;
+    }
+
+    .card {
+      padding: 34px;
+      border-radius: 34px;
+      background: var(--card);
+      box-shadow: 0 20px 55px rgba(0,0,0,.07);
+      border: 1px solid rgba(127,127,127,.12);
+      transition: .3s;
+    }
+
+    .card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 28px 70px var(--shadow);
+    }
+
+    .icon {
+      width: 62px;
+      height: 62px;
+      border-radius: 22px;
+      background: var(--army);
+      color: var(--yellow);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      margin-bottom: 22px;
+    }
+
+    body.dark .icon { color: #172312; }
+
+    .card h3 {
+      font-size: 24px;
+      color: var(--text);
+      margin-bottom: 12px;
+    }
+
+    .card p {
+      color: var(--muted);
+      line-height: 1.75;
+    }
+
+    .about {
+      background: var(--army-dark);
+      color: white;
+      border-radius: 55px;
+      margin: 0 4%;
+      padding: 85px 6%;
+      display: grid;
+      grid-template-columns: .9fr 1.1fr;
+      gap: 55px;
+      align-items: center;
+    }
+
+    .about-img {
+      height: 460px;
+      border-radius: 36px;
+      background:
+        linear-gradient(rgba(23,35,18,.2), rgba(23,35,18,.5)),
+        url("https://www.saisschool.sch.id/media_library/posts/large/87d9a-upcoming-events-img-1.jpg");
+      background-size: cover;
+      background-position: center;
+    }
+
+    .about h2 {
+      font-size: clamp(36px, 4vw, 56px);
+      margin-bottom: 22px;
+      letter-spacing: -1.5px;
+      color: white;
+    }
+
+    .about p {
+      color: rgba(255,255,255,.78);
+      line-height: 1.85;
+      margin-bottom: 24px;
+    }
+
+    .checklist {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+    }
+
+    .checklist div {
+      padding: 15px 18px;
+      border-radius: 18px;
+      background: rgba(255,255,255,.09);
+      font-weight: 800;
+    }
+
+    .checklist span {
+      color: var(--yellow);
+      margin-right: 8px;
+    }
+
+    .stat {
+      padding: 28px;
+      border-radius: 30px;
+      background: rgba(255,255,255,.1);
+      text-align: center;
+    }
+
+    .stat h3 {
+      color: var(--yellow);
+      font-size: 42px;
+      margin-bottom: 5px;
+    }
+
+    .stat p { margin: 0; }
+
+    .soft-section { background: var(--army-soft); }
+
+    .program {
+      min-height: 245px;
+      background: linear-gradient(145deg, var(--card), rgba(245,200,66,.16));
+    }
+
+    .news-card {
+      overflow: hidden;
+      padding: 0;
+    }
+
+    .news-thumb {
+      height: 190px;
+      background: linear-gradient(135deg, var(--army), var(--yellow));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 58px;
+    }
+
+    .news-content { padding: 28px; }
+
+    .news-date {
+      display: inline-block;
+      font-weight: 900;
+      color: #b58b06;
+      margin-bottom: 12px;
+      font-size: 13px;
+      letter-spacing: .8px;
+      text-transform: uppercase;
+    }
+
+    .read-more {
+      margin-top: 18px;
+      background: var(--army-soft);
+      color: var(--text);
+      border: none;
+      border-radius: 999px;
+      padding: 11px 16px;
+      cursor: pointer;
+      font-weight: 900;
+    }
+
+    .teacher-card,
+    .alumni-card,
+    .testimonial {
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .avatar {
+      width: 92px;
+      height: 92px;
+      margin: 0 auto 18px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--army), var(--yellow));
+      color: white;
+      display: grid;
+      place-items: center;
+      font-size: 38px;
+      box-shadow: 0 18px 35px rgba(63,74,47,.18);
+    }
+
+    .role {
+      display: inline-block;
+      margin-top: 10px;
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: var(--army-soft);
+      color: var(--text);
+      font-weight: 900;
+      font-size: 13px;
+    }
+
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr 1fr;
+      grid-auto-rows: 220px;
+      gap: 18px;
+    }
+
+    .gallery-item {
+      border-radius: 30px;
+      overflow: hidden;
+      position: relative;
+      box-shadow: 0 18px 45px var(--shadow);
+      background-size: cover;
+      background-position: center;
+    }
+
+    .gallery-item.big {
+      grid-row: span 2;
+    }
+
+    .gallery-item::after {
+      content: attr(data-title);
+      position: absolute;
+      left: 18px;
+      bottom: 18px;
+      padding: 9px 14px;
+      border-radius: 999px;
+      background: rgba(0,0,0,.55);
+      color: white;
+      font-weight: 900;
+      font-size: 13px;
+      backdrop-filter: blur(10px);
+    }
+
+    .spmb-box {
+      background:
+        radial-gradient(circle at top left, rgba(245,200,66,.25), transparent 32%),
+        linear-gradient(135deg, var(--army), var(--army-dark));
+      border-radius: 45px;
+      padding: 55px;
+      color: white;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      align-items: center;
+    }
+
+    .spmb-box h2 {
+      font-size: clamp(34px, 4vw, 56px);
+      margin-bottom: 18px;
+    }
+
+    .spmb-box p {
+      color: rgba(255,255,255,.78);
+      line-height: 1.8;
+    }
+
+    .spmb-form {
+      background: rgba(255,255,255,.12);
+      border: 1px solid rgba(255,255,255,.18);
+      border-radius: 30px;
+      padding: 26px;
+      backdrop-filter: blur(12px);
+    }
+
+    .spmb-form input,
+    .spmb-form select,
+    .spmb-form textarea {
+      width: 100%;
+      margin-bottom: 14px;
+      border: none;
+      border-radius: 16px;
+      padding: 15px 16px;
+      outline: none;
+      font-size: 14px;
+      background: rgba(255,255,255,.92);
+      color: #172312;
+    }
+
+    .spmb-form textarea {
+      min-height: 105px;
+      resize: vertical;
+    }
+
+    .spmb-form button {
+      width: 100%;
+      background: var(--yellow);
+      color: #172312;
+      border: none;
+      border-radius: 999px;
+      padding: 16px;
+      font-weight: 900;
+      cursor: pointer;
+      font-size: 15px;
+    }
+
+    .cta {
+      text-align: center;
+      background:
+        radial-gradient(circle at top left, rgba(245,200,66,.3), transparent 30%),
+        linear-gradient(135deg, var(--army), var(--army-dark));
+      color: white;
+      border-radius: 50px;
+      margin: 90px 8%;
+      padding: 80px 30px;
+    }
+
+    .cta h2 {
+      font-size: clamp(34px, 5vw, 58px);
+      margin-bottom: 18px;
+    }
+
+    .cta p {
+      max-width: 680px;
+      margin: 0 auto 30px;
+      color: rgba(255,255,255,.8);
+      line-height: 1.8;
+    }
+
+    footer {
+      background: #101a0d;
+      color: white;
+      padding: 55px 8%;
+      display: grid;
+      grid-template-columns: 1.2fr 1fr 1fr;
+      gap: 35px;
+    }
+
+    footer h3 {
+      margin-bottom: 15px;
+      color: var(--yellow);
+    }
+
+    footer p,
+    footer a {
+      color: rgba(255,255,255,.72);
+      text-decoration: none;
+      line-height: 1.9;
+      display: block;
+    }
+
+    .modal {
+      position: fixed;
+      inset: 0;
+      z-index: 3000;
+      background: rgba(0,0,0,.65);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+
+    .modal.active { display: flex; }
+
+    .modal-content {
+      width: min(680px, 100%);
+      background: var(--card);
+      color: var(--text);
+      border-radius: 34px;
+      padding: 34px;
+      box-shadow: 0 35px 90px rgba(0,0,0,.35);
+      position: relative;
+    }
+
+    .modal-content h3 {
+      font-size: 32px;
+      margin-bottom: 15px;
+    }
+
+    .modal-content p {
+      color: var(--muted);
+      line-height: 1.8;
+    }
+
+    .close-modal {
+      position: absolute;
+      right: 20px;
+      top: 20px;
+      border: none;
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: var(--army-soft);
+      color: var(--text);
+      font-size: 20px;
+      cursor: pointer;
+    }
+
+    .chat-toggle,
+    .wa-toggle {
+      position: fixed;
+      right: 24px;
+      width: 68px;
+      height: 68px;
+      border-radius: 50%;
+      border: none;
+      cursor: pointer;
+      z-index: 2000;
+      box-shadow: 0 20px 45px rgba(0,0,0,.22);
+      transition: .3s;
+      display: grid;
+      place-items: center;
+      text-decoration: none;
+    }
+
+    .chat-toggle {
+      bottom: 24px;
+      background: var(--yellow);
+      color: #172312;
+      font-size: 30px;
+    }
+
+    .wa-toggle {
+      bottom: 102px;
+      background: #25d366;
+      color: white;
+      font-size: 29px;
+    }
+
+    .chat-toggle:hover,
+    .wa-toggle:hover {
+      transform: translateY(-5px) scale(1.04);
+    }
+
+    .chatbot {
+      position: fixed;
+      right: 24px;
+      bottom: 180px;
+      width: min(390px, calc(100vw - 35px));
+      height: 545px;
+      background: var(--card);
+      border-radius: 32px;
+      z-index: 2000;
+      box-shadow: 0 30px 90px rgba(0,0,0,.28);
+      overflow: hidden;
+      display: none;
+      border: 1px solid rgba(127,127,127,.16);
+    }
+
+    .chatbot.active { display: flex; flex-direction: column; }
+
+    .chat-head {
+      padding: 20px;
+      background: linear-gradient(135deg, #3f4a2f, #172312);
+      color: white;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .chat-head .bot-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 16px;
+      background: var(--yellow);
+      color: #172312;
+      display: grid;
+      place-items: center;
+      font-size: 24px;
+    }
+
+    .chat-head h3 {
+      font-size: 18px;
+      margin-bottom: 3px;
+    }
+
+    .chat-head p {
+      font-size: 12px;
+      opacity: .8;
+    }
+
+    .quick-questions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      padding: 12px 18px 0;
+      background: var(--bg);
+    }
+
+    .quick-questions button {
+      border: none;
+      border-radius: 999px;
+      padding: 8px 11px;
+      background: var(--army-soft);
+      color: var(--text);
+      font-weight: 800;
+      cursor: pointer;
+      font-size: 12px;
+    }
+
+    .chat-body {
+      flex: 1;
+      padding: 18px;
+      overflow-y: auto;
+      background: var(--bg);
+    }
+
+    .msg {
+      max-width: 84%;
+      padding: 13px 15px;
+      border-radius: 18px;
+      margin-bottom: 12px;
+      line-height: 1.5;
+      font-size: 14px;
+    }
+
+    .bot {
+      background: var(--card);
+      color: var(--text);
+      border-bottom-left-radius: 5px;
+    }
+
+    .user {
+      margin-left: auto;
+      background: var(--army);
+      color: white;
+      border-bottom-right-radius: 5px;
+    }
+
+    body.dark .user { color: #10180d; }
+
+    .chat-input {
+      display: flex;
+      gap: 8px;
+      padding: 14px;
+      background: var(--card);
+      border-top: 1px solid rgba(127,127,127,.16);
+    }
+
+    .chat-input input {
+      flex: 1;
+      border: 1px solid rgba(127,127,127,.2);
+      border-radius: 999px;
+      padding: 13px 15px;
+      outline: none;
+      background: var(--bg);
+      color: var(--text);
+    }
+
+    .chat-input button {
+      width: 46px;
+      height: 46px;
+      border-radius: 50%;
+      border: none;
+      background: var(--army);
+      color: white;
+      cursor: pointer;
+      font-size: 18px;
+    }
+
+    body.dark .chat-input button { color: #10180d; }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(35px);
+      transition: .75s ease;
+    }
+
+    .reveal.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+
+    .timeline {
+      position: relative;
+      max-width: 980px;
+      margin: 0 auto;
+    }
+
+    .timeline::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 26px;
+      width: 4px;
+      border-radius: 999px;
+      background: linear-gradient(var(--yellow), var(--army));
+    }
+
+    .timeline-item {
+      position: relative;
+      margin-bottom: 22px;
+      padding-left: 75px;
+    }
+
+    .timeline-dot {
+      position: absolute;
+      left: 4px;
+      top: 10px;
+      width: 48px;
+      height: 48px;
+      border-radius: 18px;
+      background: var(--yellow);
+      color: #172312;
+      display: grid;
+      place-items: center;
+      font-size: 22px;
+      font-weight: 900;
+      box-shadow: 0 14px 30px rgba(245,200,66,.25);
+    }
+
+    .timeline-card {
+      background: var(--card);
+      border-radius: 28px;
+      padding: 26px;
+      box-shadow: 0 18px 45px var(--shadow);
+      border: 1px solid rgba(127,127,127,.14);
+    }
+
+    .timeline-card small {
+      color: #b58b06;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .timeline-card h3 {
+      margin: 8px 0 10px;
+      color: var(--text);
+      font-size: 24px;
+    }
+
+    .timeline-card p {
+      color: var(--muted);
+      line-height: 1.75;
+    }
+
+    .faq-wrap {
+      max-width: 900px;
+      margin: 0 auto;
+      display: grid;
+      gap: 14px;
+    }
+
+    .faq-item {
+      background: var(--card);
+      border-radius: 24px;
+      overflow: hidden;
+      border: 1px solid rgba(127,127,127,.14);
+      box-shadow: 0 14px 35px var(--shadow);
+    }
+
+    .faq-question {
+      width: 100%;
+      border: none;
+      background: transparent;
+      color: var(--text);
+      padding: 22px 24px;
+      text-align: left;
+      font-size: 17px;
+      font-weight: 900;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 18px;
+    }
+
+    .faq-answer {
+      max-height: 0;
+      overflow: hidden;
+      color: var(--muted);
+      line-height: 1.75;
+      padding: 0 24px;
+      transition: .35s ease;
+    }
+
+    .faq-item.active .faq-answer {
+      max-height: 220px;
+      padding: 0 24px 22px;
+    }
+
+    .location-box {
+      display: grid;
+      grid-template-columns: .9fr 1.1fr;
+      gap: 28px;
+      align-items: stretch;
+    }
+
+    .contact-panel {
+      background: var(--card);
+      border-radius: 34px;
+      padding: 34px;
+      box-shadow: 0 20px 55px var(--shadow);
+      border: 1px solid rgba(127,127,127,.14);
+    }
+
+    .contact-panel h3 {
+      font-size: 30px;
+      margin-bottom: 18px;
+      color: var(--text);
+    }
+
+    .contact-list {
+      display: grid;
+      gap: 14px;
+      margin-top: 24px;
+    }
+
+    .contact-row {
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+      padding: 15px;
+      border-radius: 20px;
+      background: var(--army-soft);
+    }
+
+    .contact-row b {
+      display: block;
+      margin-bottom: 4px;
+      color: var(--text);
+    }
+
+    .contact-row span,
+    .contact-row a {
+      color: var(--muted);
+      text-decoration: none;
+      line-height: 1.5;
+    }
+
+    .map-frame {
+      min-height: 480px;
+      border-radius: 34px;
+      overflow: hidden;
+      box-shadow: 0 20px 55px var(--shadow);
+      border: 1px solid rgba(127,127,127,.14);
+      background: var(--card);
+    }
+
+    .map-frame iframe {
+      width: 100%;
+      height: 100%;
+      min-height: 480px;
+      border: 0;
+    }
+
+    .downloads {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+
+    .download-card {
+      display: flex;
+      gap: 18px;
+      align-items: center;
+      background: var(--card);
+      border-radius: 28px;
+      padding: 24px;
+      border: 1px solid rgba(127,127,127,.14);
+      box-shadow: 0 18px 45px var(--shadow);
+      text-decoration: none;
+      color: var(--text);
+      transition: .3s;
+    }
+
+    .download-card:hover {
+      transform: translateY(-8px);
+    }
+
+    .download-icon {
+      width: 58px;
+      height: 58px;
+      border-radius: 20px;
+      background: var(--army);
+      color: var(--yellow);
+      display: grid;
+      place-items: center;
+      font-size: 26px;
+      flex-shrink: 0;
+    }
+
+    .download-card h3 {
+      font-size: 20px;
+      margin-bottom: 5px;
+    }
+
+    .download-card p {
+      color: var(--muted);
+      line-height: 1.5;
+      font-size: 14px;
+    }
+
+    .back-top {
+      position: fixed;
+      left: 24px;
+      bottom: 24px;
+      width: 54px;
+      height: 54px;
+      border-radius: 50%;
+      border: none;
+      background: var(--army);
+      color: white;
+      display: none;
+      place-items: center;
+      z-index: 2000;
+      font-size: 22px;
+      cursor: pointer;
+      box-shadow: 0 18px 40px rgba(0,0,0,.2);
+    }
+
+    body.dark .back-top {
+      color: #10180d;
+    }
+
+    .back-top.show {
+      display: grid;
+    }
+
+    @media (max-width: 1080px) {
+      nav { display: none; }
+      .hamburger { display: inline-block; }
+
+      .hero,
+      .about,
+      .spmb-box {
+        grid-template-columns: 1fr;
+      }
+
+      .grid-3,
+      .grid-4,
+      .downloads,
+      .location-box,
+      footer {
+        grid-template-columns: 1fr;
+      }
+
+      .gallery-grid {
+        grid-template-columns: 1fr;
+        grid-auto-rows: 230px;
+      }
+
+      .gallery-item.big { grid-row: span 1; }
+
+      .hero {
+        text-align: center;
+      }
+
+      .hero p,
+      .hero-actions {
+        justify-content: center;
+        margin-inline: auto;
+      }
+
+      .floating-card {
+        left: 20px;
+      }
+
+      .checklist {
+        grid-template-columns: 1fr;
+      }
+
+      .spmb-box {
+        padding: 34px;
+      }
+    }
+
+    @media (max-width: 560px) {
+      header {
+        top: 10px;
+        width: 94%;
+      }
+
+      .logo { font-size: 19px; }
+
+      .hero {
+        padding: 125px 6% 70px;
+      }
+
+      section { padding: 75px 6%; }
+
+      .image-card {
+        height: 360px;
+      }
+
+      .chatbot {
+        right: 12px;
+        bottom: 165px;
+      }
+
+      .chat-toggle,
+      .wa-toggle {
+        right: 14px;
+        width: 60px;
+        height: 60px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div id="loader">
+    <div class="loader-logo">S</div>
+    <h1>Selamat Datang di SAIS School</h1>
+    <p>Lurus Aqidahnya, Rajin Beribadahnya, Baik Akhlaknya</p>
+    <div class="bar"><span></span></div>
+  </div>
+
+  <header>
+    <a href="#beranda" class="logo">SAIS<span>School</span></a>
+
+    <nav>
+      <a href="#beranda">Beranda</a>
+      <a href="#tentang">Tentang</a>
+      <a href="#program">Program</a>
+      <a href="#berita">Berita</a>
+      <a href="#guru">Guru</a>
+      <a href="#alumni">Alumni</a>
+      <a href="#galeri">Galeri</a>
+      <a href="#jadwal">Jadwal</a>
+      <a href="#faq">FAQ</a>
+      <a href="#lokasi">Lokasi</a>
+      <a href="#spmb" class="nav-btn">SPMB</a>
+    </nav>
+
+    <div class="nav-actions">
+      <button class="theme-toggle" onclick="toggleTheme()" title="Ganti tema">🌙</button>
+      <button class="hamburger" onclick="toggleMobileMenu()" title="Menu">☰</button>
+    </div>
+  </header>
+
+  <div class="mobile-menu" id="mobileMenu" onclick="closeMobileMenu(event)">
+    <div class="mobile-panel">
+      <a href="#beranda" onclick="toggleMobileMenu()">Beranda</a>
+      <a href="#tentang" onclick="toggleMobileMenu()">Tentang</a>
+      <a href="#program" onclick="toggleMobileMenu()">Program</a>
+      <a href="#berita" onclick="toggleMobileMenu()">Berita Acara</a>
+      <a href="#guru" onclick="toggleMobileMenu()">Guru-Guru</a>
+      <a href="#alumni" onclick="toggleMobileMenu()">Alumni</a>
+      <a href="#galeri" onclick="toggleMobileMenu()">Galeri</a>
+      <a href="#jadwal" onclick="toggleMobileMenu()">Jadwal</a>
+      <a href="#faq" onclick="toggleMobileMenu()">FAQ</a>
+      <a href="#lokasi" onclick="toggleMobileMenu()">Lokasi</a>
+      <a href="#spmb" onclick="toggleMobileMenu()">SPMB</a>
+    </div>
+  </div>
+
+  <main>
+    <section class="hero" id="beranda">
+      <div class="reveal">
+        <div class="badge"><span></span> Islamic Integrated School</div>
+        <h1>Mencetak Generasi <mark>Rabbani</mark>, Cerdas & Kompetitif</h1>
+        <p>
+          SAIS School adalah institusi pendidikan Islam terpadu yang memadukan
+          akademik, tahfidz Al-Qur'an, teknologi digital, life skills, guru-guru profesional,
+          alumni inspiratif, dan pembentukan akhlak mulia.
+        </p>
+
+        <div class="hero-actions">
+          <a href="#program" class="btn primary">Lihat Program</a>
+          <a href="#spmb" class="btn secondary">Daftar SPMB</a>
+        </div>
+      </div>
+
+      <div class="hero-visual reveal">
+        <div class="image-card"></div>
+        <div class="floating-card">
+          <h3>Akreditasi A</h3>
+          <p>Lingkungan belajar terpadu dengan jenjang SMP, SMK, MA, dan Pesantren.</p>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="section-head reveal">
+        <small>Nilai Utama</small>
+        <h2>Lurus Aqidahnya, Rajin Beribadahnya, Baik Akhlaknya</h2>
+        <p>Tiga pilar pembinaan karakter untuk membentuk generasi muslim yang unggul.</p>
+      </div>
+
+      <div class="grid-3">
+        <div class="card reveal">
+          <div class="icon">☪</div>
+          <h3>Lurus Aqidahnya</h3>
+          <p>Pembelajaran Al-Qur'an, tauhid, dan hadis berdasarkan ajaran Rasulullah ﷺ.</p>
+        </div>
+
+        <div class="card reveal">
+          <div class="icon">🕌</div>
+          <h3>Rajin Beribadah</h3>
+          <p>Pembiasaan shalat berjamaah, tadarus Al-Qur'an, dan kegiatan keagamaan.</p>
+        </div>
+
+        <div class="card reveal">
+          <div class="icon">✨</div>
+          <h3>Baik Akhlaknya</h3>
+          <p>Pembinaan adab, disiplin, tanggung jawab, dan sikap hormat sehari-hari.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="about reveal" id="tentang">
+      <div class="about-img"></div>
+
+      <div>
+        <h2>Tentang SAIS School</h2>
+        <p>
+          Berdiri sejak 2013, SAIS School hadir sebagai lembaga pendidikan Islam
+          unggulan yang menaungi SMP, SMK, Madrasah Aliyah, dan Pesantren SAIS As-Sunnah.
+        </p>
+        <p>
+          Sekolah ini berkomitmen mencetak generasi yang unggul dalam ilmu,
+          teknologi, keterampilan, akhlak mulia, serta terhubung dengan alumni dan guru-guru terbaik.
+        </p>
+
+        <div class="checklist">
+          <div><span>✓</span>Kurikulum Terpadu</div>
+          <div><span>✓</span>Asrama Modern</div>
+          <div><span>✓</span>Tahfidz Qur'an</div>
+          <div><span>✓</span>Life Skills</div>
+        </div>
+
+        <div class="grid-4" style="margin-top: 30px;">
+          <div class="stat"><h3 class="counter" data-target="2013">0</h3><p>Berdiri</p></div>
+          <div class="stat"><h3>A</h3><p>Akreditasi</p></div>
+          <div class="stat"><h3 class="counter" data-target="4">0</h3><p>Unit Pendidikan</p></div>
+          <div class="stat"><h3>24/7</h3><p>Pembinaan</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="program">
+      <div class="section-head reveal">
+        <small>Excellent Programs</small>
+        <h2>Program Unggulan Kami</h2>
+        <p>Program pembelajaran yang dirancang untuk membangun ilmu, karakter, dan keterampilan masa depan.</p>
+      </div>
+
+      <div class="grid-3">
+        <div class="card program reveal"><div class="icon">🌍</div><h3>Bahasa Asing</h3><p>Bahasa Inggris, Arab, dan Mandarin dengan pendekatan aktif dan aplikatif.</p></div>
+        <div class="card program reveal"><div class="icon">🤖</div><h3>Teknologi Digital & AI</h3><p>Pengenalan Artificial Intelligence, coding, dan keterampilan digital modern.</p></div>
+        <div class="card program reveal"><div class="icon">📖</div><h3>Tahfidz Al-Qur'an</h3><p>Program membaca dan menghafal Al-Qur'an secara terstruktur dan berkelanjutan.</p></div>
+        <div class="card program reveal"><div class="icon">💚</div><h3>Akhlak Mulia</h3><p>Pembiasaan ibadah, dzikir, adab Islami, dan karakter tangguh.</p></div>
+        <div class="card program reveal"><div class="icon">🎤</div><h3>Leadership</h3><p>Public speaking, mental kuat, wawasan global, dan kepemimpinan.</p></div>
+        <div class="card program reveal"><div class="icon">💼</div><h3>Entrepreneurship</h3><p>Pengembangan jiwa wirausaha dan kesiapan menghadapi masa depan.</p></div>
+      </div>
+    </section>
+
+    <section class="soft-section" id="berita">
+      <div class="section-head reveal">
+        <small>News & Events</small>
+        <h2>Berita Acara SAIS School</h2>
+        <p>Informasi kegiatan, prestasi, agenda sekolah, dan acara terbaru yang memperkuat pengalaman belajar siswa.</p>
+      </div>
+
+      <div class="grid-3">
+        <article class="card news-card reveal">
+          <div class="news-thumb">🏆</div>
+          <div class="news-content">
+            <span class="news-date">Berita Prestasi</span>
+            <h3>Prestasi Siswa SAIS</h3>
+            <p>Siswa SAIS terus didorong untuk berprestasi dalam bidang akademik, tahfidz, olahraga, dan keterampilan.</p>
+            <button class="read-more" onclick="openModal('Prestasi Siswa SAIS', 'Berita ini menampilkan pencapaian siswa SAIS dalam bidang akademik, tahfidz Al-Qur’an, teknologi, olahraga, dan kegiatan sekolah. Bagian ini bisa diisi dengan berita asli sekolah, foto acara, tanggal kegiatan, serta dokumentasi prestasi.')">Baca Selengkapnya</button>
+          </div>
+        </article>
+
+        <article class="card news-card reveal">
+          <div class="news-thumb">🎓</div>
+          <div class="news-content">
+            <span class="news-date">Acara Sekolah</span>
+            <h3>Wisuda & Pelepasan Alumni</h3>
+            <p>Momen penghargaan untuk siswa yang telah menyelesaikan pendidikan dan siap menjadi alumni inspiratif.</p>
+            <button class="read-more" onclick="openModal('Wisuda & Pelepasan Alumni', 'Acara wisuda menjadi momen penting bagi siswa, guru-guru, orang tua, dan alumni. Konten detail dapat berisi sambutan, dokumentasi, penghargaan, serta pesan untuk lulusan SAIS School.')">Baca Selengkapnya</button>
+          </div>
+        </article>
+
+        <article class="card news-card reveal">
+          <div class="news-thumb">🕌</div>
+          <div class="news-content">
+            <span class="news-date">Kegiatan Islami</span>
+            <h3>Kajian dan Pembinaan Karakter</h3>
+            <p>Agenda rutin untuk menguatkan aqidah, ibadah, akhlak, serta semangat belajar para siswa dan santri.</p>
+            <button class="read-more" onclick="openModal('Kajian dan Pembinaan Karakter', 'Kegiatan Islami menjadi bagian penting pembinaan siswa. Detail berita dapat memuat jadwal kajian, tema, pembicara, dokumentasi, serta manfaat kegiatan bagi pembentukan karakter.')">Baca Selengkapnya</button>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section id="guru">
+      <div class="section-head reveal">
+        <small>Our Teachers</small>
+        <h2>Guru-Guru Profesional</h2>
+        <p>Guru-guru SAIS School hadir sebagai pendidik, pembimbing, dan teladan dalam ilmu, adab, serta karakter.</p>
+      </div>
+
+      <div class="grid-3">
+        <div class="card teacher-card reveal"><div class="avatar">👨‍🏫</div><h3>Guru Akademik</h3><p>Membimbing siswa memahami pelajaran dengan metode aktif, kreatif, dan menyenangkan.</p><span class="role">Akademik</span></div>
+        <div class="card teacher-card reveal"><div class="avatar">📖</div><h3>Guru Tahfidz</h3><p>Mendampingi hafalan, bacaan Al-Qur'an, adab, dan pembiasaan ibadah harian.</p><span class="role">Tahfidz</span></div>
+        <div class="card teacher-card reveal"><div class="avatar">💻</div><h3>Guru Digital</h3><p>Mengenalkan teknologi, AI, coding, multimedia, dan keterampilan masa depan.</p><span class="role">Digital Skill</span></div>
+      </div>
+    </section>
+
+    <section class="soft-section" id="alumni">
+      <div class="section-head reveal">
+        <small>Alumni Network</small>
+        <h2>Alumni SAIS School</h2>
+        <p>Alumni adalah bagian penting dari keluarga besar SAIS School yang menjadi inspirasi bagi adik-adik kelas.</p>
+      </div>
+
+      <div class="grid-3">
+        <div class="card alumni-card reveal"><div class="avatar">🎓</div><h3>Alumni Berprestasi</h3><p>Alumni SAIS diharapkan menjadi pribadi berilmu, berakhlak, mandiri, dan siap berkontribusi.</p><span class="role">Inspiratif</span></div>
+        <div class="card alumni-card reveal"><div class="avatar">🤝</div><h3>Jaringan Alumni</h3><p>Membangun koneksi antar alumni untuk berbagi pengalaman, karier, dan peluang pendidikan.</p><span class="role">Networking</span></div>
+        <div class="card alumni-card reveal"><div class="avatar">🌟</div><h3>Kisah Sukses</h3><p>Kisah alumni menjadi motivasi bagi siswa untuk terus belajar dan mengejar cita-cita.</p><span class="role">Motivasi</span></div>
+      </div>
+    </section>
+
+    <section id="galeri">
+      <div class="section-head reveal">
+        <small>Gallery</small>
+        <h2>Galeri Kegiatan & Fasilitas</h2>
+        <p>Potret kegiatan belajar, fasilitas sekolah, pembinaan santri, dan suasana lingkungan SAIS School.</p>
+      </div>
+
+      <div class="gallery-grid reveal">
+        <div class="gallery-item big" data-title="Kegiatan Sekolah" style="background-image:url('https://www.saisschool.sch.id/media_library/image_sliders/03ec1-bg-slider-2.jpg')"></div>
+        <div class="gallery-item" data-title="Pembelajaran" style="background-image:url('https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&w=900&q=80')"></div>
+        <div class="gallery-item" data-title="Guru-Guru" style="background-image:url('https://images.unsplash.com/photo-1577896851231-70ef18881754?auto=format&fit=crop&w=900&q=80')"></div>
+        <div class="gallery-item" data-title="Alumni" style="background-image:url('https://images.unsplash.com/photo-1523580846011-d3a5bc25702b?auto=format&fit=crop&w=900&q=80')"></div>
+        <div class="gallery-item" data-title="Fasilitas" style="background-image:url('https://images.unsplash.com/photo-1562774053-701939374585?auto=format&fit=crop&w=900&q=80')"></div>
+      </div>
+    </section>
+
+    <section class="soft-section">
+      <div class="section-head reveal">
+        <small>Testimonials</small>
+        <h2>Testimoni Orang Tua & Alumni</h2>
+        <p>Kepercayaan keluarga besar SAIS School menjadi semangat untuk terus menghadirkan pendidikan terbaik.</p>
+      </div>
+
+      <div class="grid-3">
+        <div class="card testimonial reveal"><div class="avatar">👨‍👩‍👧</div><h3>Orang Tua Siswa</h3><p>"SAIS membantu anak kami lebih disiplin, rajin ibadah, dan semangat belajar."</p><span class="role">Wali Murid</span></div>
+        <div class="card testimonial reveal"><div class="avatar">🎓</div><h3>Alumni</h3><p>"Ilmu, adab, dan pengalaman di SAIS menjadi bekal penting untuk masa depan."</p><span class="role">Alumni</span></div>
+        <div class="card testimonial reveal"><div class="avatar">📚</div><h3>Siswa Aktif</h3><p>"Belajar terasa menyenangkan karena guru-guru mendukung dan lingkungan sekolah nyaman."</p><span class="role">Siswa</span></div>
+      </div>
+    </section>
+
+    <section id="fasilitas">
+      <div class="section-head reveal">
+        <small>Fasilitas</small>
+        <h2>Fasilitas Lengkap & Modern</h2>
+        <p>Fasilitas terbaik untuk mendukung belajar, ibadah, keterampilan, dan kehidupan santri.</p>
+      </div>
+
+      <div class="grid-3">
+        <div class="card reveal"><div class="icon">🕌</div><h3>Masjid Besar</h3><p>Kapasitas besar, kajian rutin, perpustakaan mini, dan ruang wudhu terpisah.</p></div>
+        <div class="card reveal"><div class="icon">🏫</div><h3>Asrama Modern</h3><p>Asrama nyaman dengan pengawasan 24 jam dan fasilitas penunjang santri.</p></div>
+        <div class="card reveal"><div class="icon">🔬</div><h3>Laboratorium</h3><p>Lab komputer, IPA, analis kesehatan, bahasa multimedia, dan pemasaran.</p></div>
+      </div>
+    </section>
+
+
+    <section class="soft-section" id="jadwal">
+      <div class="section-head reveal">
+        <small>Agenda Sekolah</small>
+        <h2>Jadwal Kegiatan SAIS School</h2>
+        <p>Rangkaian agenda sekolah yang dapat diperbarui sesuai kalender akademik, kegiatan santri, dan acara sekolah.</p>
+      </div>
+
+      <div class="timeline reveal">
+        <div class="timeline-item">
+          <div class="timeline-dot">📌</div>
+          <div class="timeline-card">
+            <small>Senin - Jumat</small>
+            <h3>Pembelajaran Akademik & Tahfidz</h3>
+            <p>Kegiatan belajar mengajar, pembinaan Al-Qur'an, pembiasaan ibadah, dan penguatan karakter siswa.</p>
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-dot">🕌</div>
+          <div class="timeline-card">
+            <small>Rutin Pekanan</small>
+            <h3>Kajian, Mentoring, dan Pembinaan Akhlak</h3>
+            <p>Agenda pembinaan untuk memperkuat aqidah, ibadah, adab, disiplin, dan mental siswa.</p>
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-dot">🎤</div>
+          <div class="timeline-card">
+            <small>Bulanan</small>
+            <h3>Leadership, Public Speaking, dan Life Skill</h3>
+            <p>Kegiatan pengembangan diri untuk melatih keberanian, komunikasi, kreativitas, dan kemandirian.</p>
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-dot">🎓</div>
+          <div class="timeline-card">
+            <small>Tahunan</small>
+            <h3>SPMB, Wisuda, dan Pelepasan Alumni</h3>
+            <p>Agenda besar sekolah untuk penerimaan peserta didik baru, apresiasi siswa, dan penguatan jaringan alumni.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="unduhan">
+      <div class="section-head reveal">
+        <small>Download Center</small>
+        <h2>Unduhan Penting</h2>
+        <p>Area khusus untuk brosur, formulir, panduan pendaftaran, dan dokumen informasi sekolah.</p>
+      </div>
+
+      <div class="downloads reveal">
+        <a class="download-card" href="#spmb">
+          <div class="download-icon">📄</div>
+          <div>
+            <h3>Brosur SAIS</h3>
+            <p>Informasi profil sekolah, program unggulan, fasilitas, dan unit pendidikan.</p>
+          </div>
+        </a>
+
+        <a class="download-card" href="#spmb">
+          <div class="download-icon">📝</div>
+          <div>
+            <h3>Formulir SPMB</h3>
+            <p>Form pendaftaran online untuk calon peserta didik baru SAIS School.</p>
+          </div>
+        </a>
+
+        <a class="download-card" href="#jadwal">
+          <div class="download-icon">📅</div>
+          <div>
+            <h3>Kalender Kegiatan</h3>
+            <p>Ringkasan agenda sekolah, kegiatan santri, dan acara tahunan.</p>
+          </div>
+        </a>
+      </div>
+    </section>
+
+    <section class="soft-section" id="faq">
+      <div class="section-head reveal">
+        <small>FAQ</small>
+        <h2>Pertanyaan yang Sering Ditanyakan</h2>
+        <p>Jawaban cepat untuk calon siswa, orang tua, alumni, dan pengunjung website.</p>
+      </div>
+
+      <div class="faq-wrap reveal">
+        <div class="faq-item">
+          <button class="faq-question" onclick="toggleFAQ(this)">Apa saja jenjang pendidikan di SAIS School? <span>+</span></button>
+          <div class="faq-answer">SAIS School menaungi beberapa jenjang seperti SMP Islam, SMK Islam, Madrasah Aliyah, dan Pondok Pesantren.</div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question" onclick="toggleFAQ(this)">Apa program unggulan SAIS School? <span>+</span></button>
+          <div class="faq-answer">Program unggulan meliputi tahfidz Al-Qur'an, bahasa asing, teknologi digital dan AI, leadership, entrepreneurship, serta pembinaan akhlak.</div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question" onclick="toggleFAQ(this)">Bagaimana cara daftar SPMB? <span>+</span></button>
+          <div class="faq-answer">Calon siswa dapat mengisi form SPMB di website. Setelah dikirim, pesan akan otomatis diarahkan ke WhatsApp admin sekolah.</div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question" onclick="toggleFAQ(this)">Apakah ada asrama? <span>+</span></button>
+          <div class="faq-answer">Ya, website ini menampilkan fasilitas asrama modern dengan pembinaan dan pengawasan untuk mendukung kehidupan santri.</div>
+        </div>
+      </div>
+    </section>
+
+    <section id="lokasi">
+      <div class="section-head reveal">
+        <small>Location</small>
+        <h2>Lokasi & Kontak SAIS School</h2>
+        <p>Temukan lokasi sekolah melalui Google Maps dan hubungi admin untuk konsultasi pendaftaran.</p>
+      </div>
+
+      <div class="location-box reveal">
+        <div class="contact-panel">
+          <h3>Hubungi Kami</h3>
+          <p style="color: var(--muted); line-height: 1.8;">
+            Gunakan informasi kontak berikut untuk bertanya tentang SPMB, program sekolah, fasilitas, alumni, guru-guru, atau agenda sekolah.
+          </p>
+
+          <div class="contact-list">
+            <div class="contact-row">
+              <div>📍</div>
+              <div>
+                <b>Alamat</b>
+                <span>SAIS School - silakan sesuaikan alamat lengkap sekolah pada bagian ini.</span>
+              </div>
+            </div>
+
+            <div class="contact-row">
+              <div>☎</div>
+              <div>
+                <b>WhatsApp Admin</b>
+                <a href="https://wa.me/6281234567890" target="_blank">+62 812-3456-7890</a>
+              </div>
+            </div>
+
+            <div class="contact-row">
+              <div>🌐</div>
+              <div>
+                <b>Website Resmi</b>
+                <a href="https://www.saisschool.sch.id/" target="_blank">www.saisschool.sch.id</a>
+              </div>
+            </div>
+
+            <div class="contact-row">
+              <div>⏰</div>
+              <div>
+                <b>Jam Layanan</b>
+                <span>Senin - Jumat, 08.00 - 16.00 WIB</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="map-frame">
+          <iframe
+            loading="lazy"
+            allowfullscreen
+            referrerpolicy="no-referrer-when-downgrade"
+            src="https://www.google.com/maps?q=SAIS%20School&output=embed">
+          </iframe>
+        </div>
+      </div>
+    </section>
+
+    <section id="spmb">
+      <div class="spmb-box reveal">
+        <div>
+          <small style="color: var(--yellow); font-weight: 900; letter-spacing: 1.8px;">SPMB ONLINE</small>
+          <h2>Daftar Sekarang di SAIS School</h2>
+          <p>
+            Isi form singkat berikut untuk konsultasi pendaftaran. Setelah dikirim,
+            kamu akan diarahkan ke WhatsApp admin sekolah.
+          </p>
+        </div>
+
+        <form class="spmb-form" onsubmit="sendSPMB(event)">
+          <input type="text" id="nama" placeholder="Nama lengkap" required />
+          <input type="text" id="hp" placeholder="Nomor WhatsApp" required />
+          <select id="jenjang" required>
+            <option value="">Pilih jenjang</option>
+            <option>SMP Islam</option>
+            <option>SMK Islam</option>
+            <option>Madrasah Aliyah</option>
+            <option>Pondok Pesantren</option>
+          </select>
+          <textarea id="pesan" placeholder="Pesan tambahan"></textarea>
+          <button type="submit">Kirim ke WhatsApp</button>
+        </form>
+      </div>
+    </section>
+
+    <section class="cta" id="kontak">
+      <h2>Siap Bergabung dengan SAIS School?</h2>
+      <p>
+        Mulai perjalanan pendidikan terbaik bersama SAIS School untuk masa depan
+        yang berilmu, berakhlak, dan berdaya saing.
+      </p>
+      <a href="#spmb" class="btn primary">Daftar SPMB</a>
+    </section>
+  </main>
+
+  <footer>
+    <div>
+      <h3>SAIS School</h3>
+      <p>Mencetak generasi unggul dalam ilmu pengetahuan, teknologi, dan akhlak mulia berdasarkan nilai Islam.</p>
+    </div>
+
+    <div>
+      <h3>Menu</h3>
+      <a href="#berita">Berita Acara</a>
+      <a href="#guru">Guru-Guru</a>
+      <a href="#alumni">Alumni</a>
+      <a href="#galeri">Galeri</a>
+      <a href="#jadwal">Jadwal</a>
+      <a href="#unduhan">Unduhan</a>
+      <a href="#faq">FAQ</a>
+      <a href="#lokasi">Lokasi</a>
+      <a href="#spmb">SPMB</a>
+    </div>
+
+    <div>
+      <h3>Unit Pendidikan</h3>
+      <a>SMP Islam</a>
+      <a>SMK Islam</a>
+      <a>Madrasah Aliyah</a>
+      <a>Pondok Pesantren</a>
+    </div>
+  </footer>
+
+  <div class="modal" id="newsModal">
+    <div class="modal-content">
+      <button class="close-modal" onclick="closeModal()">×</button>
+      <h3 id="modalTitle">Judul Berita</h3>
+      <p id="modalText">Isi berita.</p>
+    </div>
+  </div>
+
+  <button class="back-top" id="backTop" onclick="window.scrollTo({top:0, behavior:'smooth'})">↑</button>
+
+  <a class="wa-toggle" href="https://wa.me/6281234567890?text=Assalamu'alaikum%20admin%20SAIS%20School,%20saya%20ingin%20bertanya%20tentang%20pendaftaran." target="_blank" title="WhatsApp">☎</a>
+  <button class="chat-toggle" onclick="toggleChat()" title="AI Chatbot">🤖</button>
+
+  <div class="chatbot" id="chatbot">
+    <div class="chat-head">
+      <div class="bot-icon">🤖</div>
+      <div>
+        <h3>SAIS AI Assistant</h3>
+        <p>Online - siap membantu informasi sekolah</p>
+      </div>
+    </div>
+
+    <div class="quick-questions">
+      <button onclick="quickAsk('Apa itu SAIS School?')">Tentang</button>
+      <button onclick="quickAsk('Apa program unggulan?')">Program</button>
+      <button onclick="quickAsk('Ada berita acara?')">Berita</button>
+      <button onclick="quickAsk('Info guru-guru')">Guru</button>
+      <button onclick="quickAsk('Info alumni')">Alumni</button>
+      <button onclick="quickAsk('Cara daftar SPMB')">SPMB</button>
+      <button onclick="quickAsk('Hubungi admin')">Admin</button>
+      <button onclick="quickAsk('Lokasi Google Maps')">Maps</button>
+      <button onclick="quickAsk('Ada unduhan brosur?')">Unduhan</button>
+    </div>
+
+    <div class="chat-body" id="chatBody">
+      <div class="msg bot">
+        Assalamu'alaikum 👋 Saya SAIS AI Assistant. Silakan tanya tentang program, fasilitas, guru-guru, alumni, berita acara, galeri, atau SPMB.
+      </div>
+    </div>
+
+    <div class="chat-input">
+      <input type="text" id="chatInput" placeholder="Tulis pertanyaan..." onkeydown="handleEnter(event)">
+      <button onclick="sendMessage()">➤</button>
+    </div>
+  </div>
+
+  <script>
+    const adminWhatsApp = "6281234567890";
+
+    window.addEventListener("load", () => {
+      setTimeout(() => {
+        document.getElementById("loader").classList.add("hide");
+      }, 5000);
+    });
+
+    function toggleTheme() {
+      document.body.classList.toggle("dark");
+      const btn = document.querySelector(".theme-toggle");
+      btn.textContent = document.body.classList.contains("dark") ? "☀️" : "🌙";
+      localStorage.setItem("saisTheme", document.body.classList.contains("dark") ? "dark" : "light");
+    }
+
+    if (localStorage.getItem("saisTheme") === "dark") {
+      document.body.classList.add("dark");
+      document.querySelector(".theme-toggle").textContent = "☀️";
+    }
+
+    function toggleMobileMenu() {
+      document.getElementById("mobileMenu").classList.toggle("active");
+      document.body.classList.toggle("no-scroll");
+    }
+
+    function closeMobileMenu(event) {
+      if (event.target.id === "mobileMenu") {
+        toggleMobileMenu();
+      }
+    }
+
+    const reveals = document.querySelectorAll(".reveal");
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) entry.target.classList.add("show");
+      });
+    }, { threshold: 0.15 });
+
+    reveals.forEach(el => observer.observe(el));
+
+    let counted = false;
+    const counterObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting && !counted) {
+          counted = true;
+          document.querySelectorAll(".counter").forEach(counter => {
+            const target = +counter.dataset.target;
+            let current = 0;
+            const step = Math.max(1, Math.floor(target / 80));
+            const timer = setInterval(() => {
+              current += step;
+              if (current >= target) {
+                counter.textContent = target;
+                clearInterval(timer);
+              } else {
+                counter.textContent = current;
+              }
+            }, 18);
+          });
+        }
+      });
+    }, { threshold: 0.3 });
+
+    const about = document.querySelector(".about");
+    if (about) counterObserver.observe(about);
+
+    function openModal(title, text) {
+      document.getElementById("modalTitle").textContent = title;
+      document.getElementById("modalText").textContent = text;
+      document.getElementById("newsModal").classList.add("active");
+    }
+
+    function closeModal() {
+      document.getElementById("newsModal").classList.remove("active");
+    }
+
+    document.getElementById("newsModal").addEventListener("click", function(e) {
+      if (e.target.id === "newsModal") closeModal();
+    });
+
+    function sendSPMB(event) {
+      event.preventDefault();
+
+      const nama = document.getElementById("nama").value;
+      const hp = document.getElementById("hp").value;
+      const jenjang = document.getElementById("jenjang").value;
+      const pesan = document.getElementById("pesan").value || "-";
+
+      const text = `Assalamu'alaikum admin SAIS School.%0A%0ASaya ingin konsultasi pendaftaran SPMB.%0A%0ANama: ${nama}%0ANo WA: ${hp}%0AJenjang: ${jenjang}%0APesan: ${pesan}`;
+      window.open(`https://wa.me/${adminWhatsApp}?text=${text}`, "_blank");
+    }
+
+
+    function toggleFAQ(button) {
+      const item = button.parentElement;
+      const alreadyActive = item.classList.contains("active");
+
+      document.querySelectorAll(".faq-item").forEach(faq => {
+        faq.classList.remove("active");
+        faq.querySelector("span").textContent = "+";
+      });
+
+      if (!alreadyActive) {
+        item.classList.add("active");
+        button.querySelector("span").textContent = "−";
+      }
+    }
+
+    window.addEventListener("scroll", () => {
+      const backTop = document.getElementById("backTop");
+      if (window.scrollY > 500) {
+        backTop.classList.add("show");
+      } else {
+        backTop.classList.remove("show");
+      }
+    });
+
+    function toggleChat() {
+      document.getElementById("chatbot").classList.toggle("active");
+    }
+
+    function handleEnter(event) {
+      if (event.key === "Enter") sendMessage();
+    }
+
+    function quickAsk(text) {
+      document.getElementById("chatInput").value = text;
+      sendMessage();
+    }
+
+    function sendMessage() {
+      const input = document.getElementById("chatInput");
+      const body = document.getElementById("chatBody");
+      const question = input.value.trim();
+
+      if (!question) return;
+
+      body.innerHTML += `<div class="msg user">${question}</div>`;
+      input.value = "";
+
+      setTimeout(() => {
+        const answer = getBotAnswer(question);
+        body.innerHTML += `<div class="msg bot">${answer}</div>`;
+        body.scrollTop = body.scrollHeight;
+      }, 500);
+
+      body.scrollTop = body.scrollHeight;
+    }
+
+    function getBotAnswer(q) {
+      const text = q.toLowerCase();
+
+      if (text.includes("sais") || text.includes("tentang")) {
+        return "SAIS School adalah sekolah Islam terpadu yang menggabungkan pendidikan akademik, tahfidz Al-Qur'an, teknologi digital, life skills, guru-guru profesional, alumni inspiratif, dan pembinaan akhlak.";
+      }
+
+      if (text.includes("program") || text.includes("unggulan")) {
+        return "Program unggulan SAIS meliputi Bahasa Asing, Tahfidz Al-Qur'an, Teknologi Digital & AI, Leadership, Entrepreneurship, serta pembinaan akhlak mulia.";
+      }
+
+      if (text.includes("berita") || text.includes("acara") || text.includes("event")) {
+        return "Bagian Berita Acara berisi informasi kegiatan sekolah, prestasi siswa, kajian, agenda Islami, wisuda, dan pelepasan alumni.";
+      }
+
+      if (text.includes("guru")) {
+        return "Guru-guru SAIS terdiri dari guru akademik, guru tahfidz, dan guru digital yang berperan sebagai pendidik, pembimbing, serta teladan bagi siswa.";
+      }
+
+      if (text.includes("alumni")) {
+        return "Alumni SAIS adalah keluarga besar sekolah yang menjadi inspirasi, membangun jaringan, dan berbagi pengalaman untuk adik-adik kelas.";
+      }
+
+      if (text.includes("fasilitas")) {
+        return "Fasilitas SAIS meliputi masjid besar, asrama modern, laboratorium, perpustakaan, ruang belajar, dan fasilitas pendukung kegiatan siswa.";
+      }
+
+      if (text.includes("galeri") || text.includes("foto")) {
+        return "Galeri menampilkan foto kegiatan sekolah, pembelajaran, guru-guru, alumni, dan fasilitas SAIS School.";
+      }
+
+      if (text.includes("maps") || text.includes("map") || text.includes("lokasi") || text.includes("alamat")) {
+        return "Silakan buka bagian Lokasi & Kontak. Di sana sudah tersedia Google Maps embed, website resmi, WhatsApp admin, dan jam layanan.";
+      }
+
+      if (text.includes("jadwal") || text.includes("agenda")) {
+        return "Bagian Jadwal Kegiatan berisi agenda pembelajaran, kajian, mentoring, leadership, SPMB, wisuda, dan pelepasan alumni.";
+      }
+
+      if (text.includes("faq") || text.includes("pertanyaan")) {
+        return "Bagian FAQ berisi jawaban cepat tentang jenjang pendidikan, program unggulan, SPMB, dan asrama.";
+      }
+
+      if (text.includes("unduhan") || text.includes("download") || text.includes("brosur")) {
+        return "Bagian Unduhan menyediakan area untuk brosur sekolah, formulir SPMB, dan kalender kegiatan. Link file bisa diganti dengan dokumen asli sekolah.";
+      }
+
+      if (text.includes("daftar") || text.includes("spmb") || text.includes("pendaftaran")) {
+        return "Untuk pendaftaran, buka bagian SPMB dan isi form singkat. Setelah dikirim, kamu akan diarahkan ke WhatsApp admin sekolah.";
+      }
+
+      if (text.includes("admin") || text.includes("hubungi") || text.includes("whatsapp") || text.includes("wa")) {
+        return `Silakan klik tombol WhatsApp hijau di kanan bawah, atau gunakan form SPMB agar pesan otomatis terkirim ke admin.`;
+      }
+
+      if (text.includes("akreditasi")) {
+        return "SAIS School menampilkan identitas sebagai sekolah dengan Akreditasi A pada halaman utama website.";
+      }
+
+      return "Terima kasih atas pertanyaannya. Saya bisa membantu informasi tentang SAIS School, program, fasilitas, berita acara, guru-guru, alumni, galeri, dan SPMB.";
+    }
+  </script>
+
+</body>
+</html>
