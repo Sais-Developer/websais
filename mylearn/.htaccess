@@ -1,0 +1,45 @@
+# ======== Aktifkan RewriteEngine ========
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # Redirect root ke index.php
+    RewriteRule ^$ index.php [L]
+
+    # Jika file PHP ada, akses langsung
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_FILENAME}.php -f
+    RewriteRule ^(.*)$ $1.php [L]
+
+    # Blokir hotlink & referer judi
+    RewriteCond %{HTTP_REFERER} (maxbet|sbobet|qqslot|slot88|bola88|togel|casino|judol) [NC]
+    RewriteRule .* - [F]
+</IfModule>
+
+# ======== Blokir Listing Folder & Server Info ========
+Options -Indexes
+ServerSignature Off
+
+# ======== Blokir File Sensitif & Backdoor ========
+<FilesMatch "^(wp-config\.php|config\.php|\.env|shell|cmd|1index|zz|wp-tmp)\.php$">
+    Require all denied
+</FilesMatch>
+
+# ======== Blokir PHP di folder Upload ========
+<FilesMatch "^uploads/.*\.(php|phtml|php5|php7|phps)$">
+    Require all denied
+</FilesMatch>
+
+# ======== Blokir Bot Buruk ========
+SetEnvIfNoCase User-Agent "curl|wget|python|libwww-perl" bad_bot
+
+<IfModule mod_authz_core.c>
+    <RequireAll>
+        Require all granted
+        Require not env bad_bot
+    </RequireAll>
+</IfModule>
+
+# ======== Blokir akses ke .htaccess ========
+<Files ".htaccess">
+    Require all denied
+</Files>

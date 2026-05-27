@@ -1,0 +1,109 @@
+.logo-img {width: 40px;height: auto;margin-bottom: 10px;}
+.user-info-text {font-size: 12px;color:#00FA9A;line-height: 1;margin-top:10px;}
+.hide-sidebar-toggle-button {display: none;}
+@media (max-width: 991px) {.hide-sidebar-toggle-button {display: block !important;}}
+@media (max-width: 991px) {
+    .app-header {
+        width: 100% !important;
+        right: 0 !important;
+        left: 0 !important;
+    }
+
+    .app-header::before {
+        width: 100% !important;
+    }
+    .logo {
+        display: none !important;
+    }
+    .logo-img {
+        display: none !important;
+    }
+}
+@media (max-width: 991px) {
+    .app-header {
+        position: fixed;
+        top: 1px !important;
+        left: 0 !important;
+        right: 0 !important;
+        width: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+    .app-header::before {
+        top: 1px !important;
+        left: 0 !important;
+        width: 100% !important;
+    }
+    .logo,
+    .logo-img {
+        display: none !important;
+    }
+}
+@media (max-width: 991px) {
+    .app-content {
+        margin-top: 110px !important;   
+        padding-top: 0 !important;
+    }
+    .app-content .container {
+        padding-left: 2px !important;
+        padding-right: 2px !important;
+    }
+}
+
+.bg-sandik-mode .app-sidebar,
+.bg-sandik-mode .app-header,
+ .bg-sandik-mode .navbar,
+ .bg-sandik-mode .logo,
+.bg-sandik-mode .card {
+    background: #f2f4f4 !important;
+    border-color: #D9B96C !important;
+    color: #4b3a16 !important;
+}
+
+.responsive-img {
+width: 95px;
+height: 95px;
+object-fit: contain;
+border-radius: 10px;
+padding: 5px;
+transition: .3s ease;
+}
+.btn-sm {
+display: inline-flex;           
+align-items: center;          
+justify-content: center;        
+padding: 0.25rem 0.5rem;       
+font-size: 0.85rem;            
+border-radius: 0.25rem;       
+border: none;
+cursor: pointer;
+text-decoration: none;
+transition: background-color 0.2s;
+}
+
+
+.btn-sm .material-icons {
+font-size: 1rem;              
+line-height: 1;                
+margin: 0;     
+             
+}
+.table-img {width: 20px;height: 20px;object-fit: cover;border-radius: 50%;display: block;margin: 0 auto;}
+.table-responsive {
+ overflow-x: visible; 
+}
+
+#datatable1.dataTable td,
+#datatable1.dataTable th {
+padding: 9px 13px !important;  
+line-height: 1 !important;
+font-size: 12px;  
+vertical-align: middle;	
+}
+#datatable1.dataTable th {
+ height: 20px !important;
+ 
+}
+#datatable1.dataTable tr {
+ height: auto !important;
+}

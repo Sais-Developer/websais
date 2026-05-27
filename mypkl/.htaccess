@@ -1,0 +1,81 @@
+RewriteEngine On
+
+# ========== Redirect index ==========
+RewriteRule ^$ index.php [L]
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME}.php -f
+RewriteRule ^(.*)$ $1.php
+
+# ========== Blok Listing Folder ==========
+Options -Indexes
+ServerSignature Off
+
+# ========== Blok Akses File Sensitif ==========
+<FilesMatch "^(wp-config\.php|config\.php|\.env)$">
+    Require all denied
+</FilesMatch>
+
+# ========== Blok File PHP di Folder Upload ==========
+<FilesMatch "uploads/.*\.(php|phtml|php5|php7|phps)$">
+    Require all denied
+</FilesMatch>
+
+# ========== Blok File Backdoor Umum ==========
+<FilesMatch "(shell|cmd|1index|zz|wp-tmp)\.php">
+    Require all denied
+</FilesMatch>
+
+# ========== Blok Bot Buruk ==========
+SetEnvIfNoCase User-Agent "curl" bad_bot
+SetEnvIfNoCase User-Agent "wget" bad_bot
+SetEnvIfNoCase User-Agent "python" bad_bot
+SetEnvIfNoCase User-Agent "libwww-perl" bad_bot
+
+<IfModule mod_authz_core.c>
+    <RequireAll>
+        Require all granted
+        Require not env bad_bot
+    </RequireAll>
+</IfModule>
+
+# ========== Blok Akses ke .htaccess Sendiri ==========
+<Files ".htaccess">
+    Require all denied
+</Files>
+
+# ======== BLOKIR SITUS IKLAN JUDOL / REDIRECT ========
+SetEnvIf Referer "sbobet" judol_referer
+SetEnvIf Referer "maxbet" judol_referer
+SetEnvIf Referer "qqslot" judol_referer
+SetEnvIf Referer "luxury777" judol_referer
+SetEnvIf Referer "slot88" judol_referer
+SetEnvIf Referer "bola88" judol_referer
+SetEnvIf Referer "togel" judol_referer
+SetEnvIf Referer "hoki" judol_referer
+SetEnvIf Referer "judi" judol_referer
+SetEnvIf Referer "casino" judol_referer
+SetEnvIf Referer "domino" judol_referer
+SetEnvIf Referer "scws" judol_referer
+SetEnvIf Referer "pgsoft" judol_referer
+SetEnvIf Referer "sexygaming" judol_referer
+
+<IfModule mod_authz_core.c>
+    <RequireAll>
+        Require all granted
+        Require not env judol_referer
+    </RequireAll>
+</IfModule>
+
+# ======== BLOKIR HOTLINK JUDOL / JS IFRAME ========
+<IfModule mod_rewrite.c>
+RewriteEngine On
+RewriteCond %{HTTP_REFERER} maxbet [NC,OR]
+RewriteCond %{HTTP_REFERER} sbobet [NC,OR]
+RewriteCond %{HTTP_REFERER} qqslot [NC,OR]
+RewriteCond %{HTTP_REFERER} slot88 [NC,OR]
+RewriteCond %{HTTP_REFERER} bola88 [NC,OR]
+RewriteCond %{HTTP_REFERER} togel [NC,OR]
+RewriteCond %{HTTP_REFERER} casino [NC,OR]
+RewriteCond %{HTTP_REFERER} judol [NC]
+RewriteRule .* - [F]
+</IfModule>

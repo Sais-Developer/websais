@@ -1,0 +1,14 @@
+# Blokir semua file PHP agar tidak bisa dieksekusi
+<FilesMatch "\.(php|php5|php7|phtml)$">
+  Order Allow,Deny
+  Deny from all
+</FilesMatch>
+
+# Optional: Blokir file .html, .js jika perlu
+<FilesMatch "\.(html|htm|js)$">
+  Order Allow,Deny
+  Deny from all
+</FilesMatch>
+
+# Optional: Blokir direktori listing
+Options -Indexes

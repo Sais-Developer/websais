@@ -1,0 +1,178 @@
+<?php
+defined('APK') or exit('No Access');
+
+?>
+ <?php if ($ac == '') : ?>
+  <div class="row">
+     <div class="col-md-8">
+        <div class="card">
+			<div class="card-header">
+				<h5 class="card-title">KARTU PEGAWAI</h5>
+					
+				 </div>
+		          <div class="card-body"> 
+                 <div class="row">
+				   <div class="col-md-12">
+				  <form id="formpengaturan" >
+				 
+					</div>
+					</form>
+				   </div>
+				</diV>
+			</div>
+		</div>
+			<div class="col-md-4">
+       	     <div class="card">
+			<div class="card-header">
+			<h5 class="card-title">CETAK BELAKANG</h5>
+						
+				 </div>
+		<div class="card-body"> 
+					<form action="kartu/pegawai1.php" target="_blank" method="POST" class="form-horizontal form-label-left">
+							<div class="item form-group">
+						<label class="bold">Dari ID</label>
+							<div class="col-md-12">
+							<input type="number" name="id" required="required" class="form-control" value="1">
+								</div>
+							</div> 
+							
+							<div class="item form-group">
+						<label class="bold">Sampai ID</label>
+							<div class="col-md-12">
+							<input type="number" name="ids" required="required" class="form-control" value="9">
+								</div>
+							</div> 
+							<p>Minimal 3 Orang Maximal 9 Orang per lembar</p>
+							<div class="item form-group">
+								<div class="col-md-12">
+								<br>
+				                   <button type="submit" class="btn btn-primary pull-right"><i class="material-icons">print</i> Cetak</button>
+								</div>
+							</div>
+							</form>
+						 </div>
+					  </div>
+					 
+					 <div class="col-md-12">
+       	  <div class="card">
+			<div class="card-header">
+			<h5 class="card-title">CETAK DEPAN</h5>
+						
+				 </div>
+		<div class="card-body"> 
+                  
+					<form action="kartu/pegawai2.php" target="_blank" method="POST" class="form-horizontal form-label-left">
+                   
+							<div class="item form-group">
+						<label class="bold">Dari ID</label>
+							<div class="col-md-12">
+							<input type="number" name="id" required="required" class="form-control" value="1">
+								</div>
+							</div> 
+							
+							<div class="item form-group">
+						<label class="bold">Sampai ID</label>
+							<div class="col-md-12">
+							
+							<input type="number" name="ids" required="required" class="form-control" value="9">
+							
+								</div>
+							</div> 
+							 
+							<p>Minimal 3 Orang Maximal 9 Orang per lembar</p>
+							
+							<div class="item form-group">
+								<div class="col-md-12">
+								<br>
+								
+				                   <button type="submit" class="btn btn-primary"><i class="material-icons">print</i> Cetak</button>
+							   
+								</div>
+							</div>
+							</form>
+						 </div>
+					  </div>
+					 </div>
+				</div>
+			</div>	
+<?php elseif($ac == enkripsi('update')): ?>
+ <?php
+$jsiswa = mysqli_num_rows(mysqli_query($koneksi, "SELECT * FROM siswa WHERE alamat<>''"));
+?>   
+			<div class="row">
+     <div class="col-md-8">  
+			 <div class="card">
+			<div class="card-header">
+				<h5 class="card-title">UPDATE DATA SISWA</h5>
+				
+					<a href="kartu/proses.php" class="btn btn-sm btn-link pull-right" data-toggle="tooltip" data-placement="top" title="Download Format"><i class="fa fa-download"></i> Download Format</a>
+					
+								</div>
+				                <div class="card-body">  
+								<form id='formsiswa' >								 
+								    <div class='col-md-12'>
+                                      <label>Pilih File</label>
+									  <div class="input-group">
+                                       <input type='file' name='file' class='form-control' required='true' />
+									   <span class="input-group-btn">
+											<button type="submit" class="btn btn-primary"><i class="fa fa-upload"></i> Import</button>
+										</span>
+                                    </div>
+								</form>
+							</div>
+							
+						</div>
+					</div>
+				</div>
+				<div class="col-xl-4">
+                                <div class="card widget widget-stats">
+                                    <div class="card-body">
+                                        <div class="widget-stats-container d-flex">
+                                            <div class="widget-stats-icon widget-stats-icon-primary">
+                                                <i class="material-icons-outlined">storage</i>
+                                            </div>
+                                            <div class="widget-stats-content flex-fill">
+                                                <span class="widget-stats-title">SISWA </span>
+                                                <span class="widget-stats-amount"><?= $jsiswa; ?> PD</span>
+                                                <span class="widget-stats-info">dari <?= $jsiswa ?> PD</span><p>
+												</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+						</div>
+				
+			
+	<script>
+    $('#formsiswa').submit(function(e){
+		e.preventDefault();
+		var data = new FormData(this);
+		$.ajax(
+		{
+			type: 'POST',
+             url: 'kartu/import_siswa.php',
+            data: data,
+			cache: false,
+			contentType: false,
+			processData: false,
+			 beforeSend: function() {
+             $('#progressbox').html('<div><label class="sandik" style="color:blue;margin-left:80px;">Data sedang di proses</label>&nbsp;&nbsp;&nbsp;<img src="../images/animasi.gif" style="width:50px;"></div>');
+			$('.progress-bar').animate({
+			width: "30%"
+			}, 500);
+            },
+			success: function(data){   		
+				
+					setTimeout(function()
+						{
+						window.location.replace('?pg=<?= enkripsi(cetak) ?>');
+						}, 2000);
+									  
+						}
+					});
+				return false;
+			});
+		</script>	
+		<?php endif; ?>
+             
